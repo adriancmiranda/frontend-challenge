@@ -1,0 +1,12 @@
+<div class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
+  <span class="Form-inputLabel"><%= label %></span>
+  <div class="Form-inputEnumerable">
+    <select name="<%= name %>" <% if (required) { %>required="required"<% } %>>
+      <option value="">Selecione uma opção</option>
+      <% Object.keys(values).forEach((option, index) => { %>
+      <% var selected = option ? "selected" : ""; %>
+      <option value="<%= option %>"><%= option %></option>
+      <% }) %>
+    </select>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
+  <span class="Form-inputLabel"><%= label %></span>
+  <input
+    class="Form-inputSmallText"
+    name="<%= name %>"
+    type="text"
+    placeholder="<%= placeholder %>"
+    maxlength="350"
+    <% if (required) { %>required="required"<% } %>
+  />
+</label>

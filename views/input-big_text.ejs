@@ -1,0 +1,10 @@
+<label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
+  <span class="Form-inputLabel"><%= label %></span>
+  <textarea
+    class="Form-inputBigText"
+    name="<%= name %>"
+    placeholder="<%= placeholder %>"
+    minlength="3"
+    <% if (required) { %>required="required"<% } %>>
+  </textarea>
+</label>

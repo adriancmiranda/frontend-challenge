@@ -36,7 +36,24 @@
 
 			<form class="Stage-form Form">
 				<fieldset class="Form-fieldset">
-				</fieldset>
+          <legend class="Form-legend">
+            Explique o que você precisa
+            <small>Peça orçamento grátis, online!</small>
+          </legend>
+          <section class="Form-section">
+            <% _embedded.request_fields.forEach((input) => { %>
+            <%- include(`input-${input.type}`, input); %>
+            <% }) %>
+          </section>
+        </fieldset>
+
+        <fieldset class="Form-fieldset">
+          <section class="Form-section">
+            <% _embedded.user_fields.forEach((input) => { %>
+            <%- include(`input-${input.type}`, input); %>
+            <% }) %>
+          </section>
+        </fieldset>
 			</form>
 		</section>
 

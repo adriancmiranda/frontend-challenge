@@ -1,0 +1,12 @@
+<label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
+  <span class="Form-inputLabel"><%= label %></span>
+  <input
+    class="Form-inputPhone"
+    name="<%= name %>"
+    type="tel"
+    placeholder="<%= placeholder %>"
+    maxlength="15"
+    pattern="\([0-9]{2}\) [0-9]{4,6}-[0-9]{3,4}$"
+    <% if (required) { %>required="required"<% } %>
+  />
+</label>

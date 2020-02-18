@@ -1,0 +1,11 @@
+<label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
+  <span class="Form-inputLabel"><%= label %></span>
+  <input
+    class="Form-inputCep"
+    name="<%= name %>"
+    type="number"
+    placeholder="<%= placeholder %>"
+    pattern="[0-9]+$"
+    <% if (required) { %>required="required"<% } %>
+  />
+</label>
