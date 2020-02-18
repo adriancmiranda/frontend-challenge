@@ -1,7 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 const babelLoader = require.resolve('babel-loader');
+const whatwgFetch = require.resolve('whatwg-fetch');
 
 module.exports = (app) => {
 	const config = {
@@ -10,6 +12,9 @@ module.exports = (app) => {
 		devtool: 'hidden-source-map',
 		context: path.resolve('.'),
 		entry: {
+			polyfill: [
+				whatwgFetch,
+			],
 			index: [
 				`./source/index.js`,
 			],
@@ -38,6 +43,20 @@ module.exports = (app) => {
 			new webpack.ProgressPlugin(),
 			new webpack.optimize.OccurrenceOrderPlugin(),
 			new webpack.HashedModuleIdsPlugin(),
+			new ManifestPlugin({
+				publicPath: '/',
+				fileName: 'manifest.assets.json',
+				generate: (wpSeed, wpFiles, wpEntrypoints) => {
+					const files = wpFiles.reduce((manifest, file) => {
+						manifest[file.name] = file.path;
+						return manifest;
+					}, wpSeed);
+					const entrypoints = wpEntrypoints.index.filter((fileName) =>
+						!fileName.endsWith('.map')
+					);
+					return { entrypoints, files };
+				},
+			}),
 		],
 	};
 	return config;

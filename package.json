@@ -14,8 +14,8 @@
     "test:coverage": "echo 'The test:coverage script task is not available yet'",
     "test:unit": "echo 'The test:unit script task is not available yet'",
     "test:e2e": "echo 'The test:e2e script task is not available yet'",
-    "dev": "cross-env HOST=localhost PORT=3000 NODE_ENV=development nodemon server",
-    "dev:public": "cross-env PORT=3000 NODE_ENV=development nodemon server",
+    "dev": "cross-env HOST=localhost PORT=3000 NODE_ENV=development nodemon --ignore 'public/manifest.assets.json' server",
+    "dev:public": "cross-env PORT=3000 NODE_ENV=development nodemon --ignore 'public/manifest.assets.json' server",
     "dev:tunnel": "redrun -P dev:public ngrok",
     "build": "webpack-cli --env=production --progress --profile --colors --verbose --config=server/webpack/config.prod.js",
     "ngrok": "ngrok http 9000 -host-header=localhost:9000",
@@ -51,6 +51,8 @@
     "webpack": "4.41.6",
     "webpack-cli": "3.3.11",
     "webpack-dev-middleware": "3.7.2",
-    "webpack-hot-middleware": "2.25.0"
+    "webpack-hot-middleware": "2.25.0",
+    "webpack-manifest-plugin": "2.2.0",
+    "whatwg-fetch": "3.0.0"
   }
 }

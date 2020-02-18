@@ -1,0 +1,9 @@
+{
+  "entrypoints": [
+    "scripts/index.js"
+  ],
+  "files": {
+    "index.js": "/scripts/index.js",
+    "polyfill.js": "/scripts/polyfill.js"
+  }
+}
