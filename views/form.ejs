@@ -35,27 +35,31 @@
 				</h1>
 			</header>
 
-			<form class="Stage-form Form">
-				<fieldset class="Form-fieldset">
-          <legend class="Form-legend">
-            Explique o que você precisa
-            <small>Peça orçamento grátis, online!</small>
-          </legend>
-          <section class="Form-section">
-            <% _embedded.request_fields.forEach((input) => { %>
-            <%- include(`input-${input.type}`, input); %>
-            <% }) %>
-          </section>
-        </fieldset>
+			<section class="Stage-form Form">
+				<div class="Form-wrapper">
+					<form class="Form-requests" novalidate>
+						<fieldset class="Form-fieldset">
+							<legend class="Form-legend">
+								Explique o que você precisa
+								<small>Peça orçamento grátis, online!</small>
+							</legend>
+							<section class="Form-section">
+								<% _embedded.request_fields.forEach((input) => { %>
+								<%- include(`input-${input.type}`, input); %>
+								<% }) %>
+							</section>
+						</fieldset>
 
-        <fieldset class="Form-fieldset">
-          <section class="Form-section">
-            <% _embedded.user_fields.forEach((input) => { %>
-            <%- include(`input-${input.type}`, input); %>
-            <% }) %>
-          </section>
-        </fieldset>
-			</form>
+						<fieldset class="Form-fieldset">
+							<section class="Form-section">
+								<% _embedded.user_fields.forEach((input) => { %>
+								<%- include(`input-${input.type}`, input); %>
+								<% }) %>
+							</section>
+						</fieldset>
+					</form>
+				</div>
+			</section>
 		</section>
 
 		<%- javascriptTag('polyfill.js'); %>

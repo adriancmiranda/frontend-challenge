@@ -1,3 +1,13 @@
+:root {
+	--form-backgroundColor: rgb(255, 243, 153);
+	--form-inputEnumerable-arrowColor: #000;
+	--form-inputEnumerable-arrowColorHover: #388ecc;
+  --stage-width: 82.5%;
+  --form-padding: 50px 20px;
+  --form-input-gutterY: 20px;
+  --form-inputLabel-marginBottom: 10px;
+}
+
 *,
 *::after,
 *::before {
@@ -24,14 +34,18 @@ body {
 
 .Stage {
 	position: relative;
+	width: var(--stage-width);
+	margin: 0 auto;
 }
 
 .Stage-header {
 	position: relative;
+	margin: 0 auto;
 }
 
 .Stage-form {
 	position: relative;
+	margin: 0 auto;
 }
 
 .Header {
@@ -41,38 +55,170 @@ body {
 }
 
 .Form {
-	background-color: rgb(255, 243, 153);
+	background-color: var(--form-backgroundColor);
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+	border-radius: 7px;
+	border: 2px solid #000;
+	width: 100%;
+	overflow: hidden;
+}
+
+.Form-wrapper {
+	width: 100%;
+	overflow: hidden;
+	padding: var(--form-padding);
+}
+
+.Form-requests {
+	position: relative;
 }
 
 .Form-fieldset {
+	float: left;
+	width: 100%;
+	border: none;
+	padding-bottom: 20px;
 }
 
 .Form-legend {
+	padding: 5px 0 5px 10px;
+	margin: 0 auto 30px auto;
+	text-align: center;
+	font-size: 22px;
+	line-height: 26px;
+	font-weight: 600;
+	color: #000;
+}
+
+.Form-legend > small {
+	display: block;
 }
 
 .Form-section {
 }
 
 .Form-input {
+	margin-top: var(--form-input-gutterY);
+	display: block;
 }
 
 .Form-inputLabel {
+	margin-bottom: var(--form-inputLabel-marginBottom);
+	display: block;
 }
 
 .Form-inputBigText {
+	width: 100%;
+	min-height: 80px;
+	padding: 1rem 3rem 1rem 1rem;
+	border-radius: 2px;
+	font-size: 1rem;
+	outline: 0;
+	border: 0;
+	resize: vertical;
 }
 
 .Form-inputCep {
+	width: 100%;
+	padding: 1rem 3rem 1rem 1rem;
+	border-radius: 2px;
+	font-size: 1rem;
+	outline: 0;
+	border: 0;
 }
 
 .Form-inputEmail {
+	width: 100%;
+	padding: 1rem 3rem 1rem 1rem;
+	border-radius: 2px;
+	font-size: 1rem;
+	outline: 0;
+	border: 0;
+}
+
+.Form-inputEnumerable,
+.Form-inputSelect {
+	width: 100%;
+}
+
+.Form-input[data-ui-type="enumerable"] {
+	margin: 0.5rem 1rem;
+	max-width: 100%;
+}
+
+@media (min-width: 500px) {
+	.Form-input[data-ui-type="enumerable"] {
+		margin: 1rem 0;
+	}
+}
+
+.Form-input[data-ui-type="enumerable"] h3 {
+	margin-left: 1rem;
+	font-size: 1.8rem;
 }
 
 .Form-inputEnumerable {
+	position: relative;
+	max-width: 100%;
+	display: inline-block;
+	z-index: 4;
+}
+
+.Form-inputSelect {
+	position: relative;
+	color: inherit;
+	cursor: pointer;
+	font-size: 1rem;
+	max-width: 100%;
+	outline: 0;
+	border: 0;
+	padding: 1rem 3rem 1rem 1rem;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+}
+
+.Form-inputEnumerable select::-ms-expand {
+	display: none;
+}
+
+.Form-inputEnumerable::after {
+	position: absolute;
+	top: 50%;
+	right: 18px;
+	width: 10px;
+	height: 10px;
+	margin-top: -7px;
+	display: block;
+	z-index: 5;
+	border: 3px solid var(--form-inputEnumerable-arrowColor);
+	border-radius: 2px;
+	border-right: 0;
+	border-top: 0;
+	pointer-events: none;
+	transform: rotate(-45deg);
+	transform-origin: center;
+	transition: border-color 0.3s ease-out;
+	content: " ";
+}
+
+.Form-inputEnumerable:hover::after {
+	border-color: var(--form-inputEnumerable-arrowColorHover)
 }
 
 .Form-inputPhone {
+	width: 100%;
+	padding: 1rem 3rem 1rem 1rem;
+	border-radius: 2px;
+	font-size: 1rem;
+	outline: 0;
+	border: 0;
 }
 
 .Form-inputSmallText {
+	width: 100%;
+	padding: 1rem 3rem 1rem 1rem;
+	border-radius: 2px;
+	font-size: 1rem;
+	outline: 0;
+	border: 0;
 }
