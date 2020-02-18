@@ -1,23 +1,37 @@
-* {
+*,
+*::after,
+*::before {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  box-sizing: border-box;
+  outline-style: none;
 }
 
-html,
-body {
+html {
+	font-size: 16px;
+  line-height: 10px;
+  font-family: sans-serif;
 }
 
 body {
+	margin: 0;
 }
 
 .is-rendering {
+	visibility: hidden;
+	opacity: 0;
 }
 
 .Stage {
+	position: relative;
 }
 
 .Stage-header {
+	position: relative;
 }
 
 .Stage-form {
+	position: relative;
 }
 
 .Header {
@@ -27,6 +41,7 @@ body {
 }
 
 .Form {
+	background-color: rgb(255, 243, 153);
 }
 
 .Form-fieldset {

@@ -5,6 +5,8 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const babelLoader = require.resolve('babel-loader');
 const whatwgFetch = require.resolve('whatwg-fetch');
 const webpackHotMiddlewareClient = require.resolve('webpack-hot-middleware/client');
+const styleLoader = require.resolve('style-loader');
+const cssLoader = require.resolve('css-loader');
 
 module.exports = (app) => {
 	const config = {
@@ -45,6 +47,24 @@ module.exports = (app) => {
 					test: /\.m?jsx?(\?.*)?$/i,
 					exclude: /(node_modules|bower_components)/,
 					loader: babelLoader,
+				},
+				{
+					test: /\.css(\?.*)?$/i,
+					use: [
+						{
+							loader: styleLoader,
+							options: {
+								esModule: true,
+							},
+						},
+						{
+							loader: cssLoader,
+							options: {
+								modules: false,
+								sourceMap: true,
+							},
+						},
+					],
 				},
 			],
 		},

@@ -1,9 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const babelLoader = require.resolve('babel-loader');
 const whatwgFetch = require.resolve('whatwg-fetch');
+const styleLoader = require.resolve('style-loader');
+const cssLoader = require.resolve('css-loader');
+
+function ensureSlashEnd(val) {
+  if (typeof val === 'string') {
+    return val.replace(/([^/])$/, '$1/')
+  }
+  return val;
+}
 
 module.exports = (app) => {
 	const config = {
@@ -22,8 +32,8 @@ module.exports = (app) => {
 		output: {
 			publicPath: '/',
 			path: path.resolve('public'),
-			filename: 'scripts/[name].js',
-			chunkFilename: 'scripts/[name].js',
+			filename: 'scripts/[name].[hash:8].js',
+			chunkFilename: 'scripts/[name].[hash:8].js',
 		},
 		resolve: {
 			modules: [
@@ -36,6 +46,27 @@ module.exports = (app) => {
 					test: /\.m?jsx?(\?.*)?$/i,
 					exclude: /(node_modules|bower_components)/,
 					loader: babelLoader,
+				},
+				{
+					test: /\.css(\?.*)?$/i,
+					use: [
+						{
+							loader: MiniCssExtractPlugin.loader,
+							options: {
+								esModule: true,
+								publicPath: (resourcePath, context) => (
+									ensureSlashEnd(path.relative(path.dirname(resourcePath), context))
+								),
+							},
+						},
+						{
+							loader: cssLoader,
+							options: {
+								modules: false,
+								sourceMap: true,
+							},
+						},
+					],
 				},
 			],
 		},
@@ -56,6 +87,11 @@ module.exports = (app) => {
 					);
 					return { entrypoints, files };
 				},
+			}),
+			new MiniCssExtractPlugin({
+				filename: 'styles/[name].[hash:8].css',
+				chunkFilename: 'styles/[id].[hash:8].css',
+				ignoreOrder: false,
 			}),
 		],
 	};
