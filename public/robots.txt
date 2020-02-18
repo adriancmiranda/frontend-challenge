@@ -1,0 +1,16 @@
+User-agent: *
+
+# Parameters
+Disallow: /*page_r=*
+Disallow: /*page=*
+Disallow: /*ref=internal*
+
+# Directories
+Disallow: /usuarios
+Disallow: /pros/*
+
+# Mexico
+Disallow: /construccion-y-remodelaciones
+
+Sitemap: https://www.getninjas.com.br/sitemaps/sitemap.xml.gz
+Sitemap: https://www.getninjas.com.br/cms-sitemaps/sitemap.xml.gz

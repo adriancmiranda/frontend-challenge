@@ -1,0 +1,37 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# EditorConfig is awesome: http://EditorConfig.org
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+root = true
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Standard
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[*]
+charset = utf-8
+indent_size = 2
+indent_style = space
+end_of_line = lf
+quote_type = single
+spaces_in_brackets = false
+spaces_around_operators = true
+space_after_control_statements = true
+space_after_anonymous_functions = true
+trim_trailing_whitespace = true
+curly_bracket_next_line = false
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.diff]
+trim_trailing_whitespace = false
+
+[bin/*]
+indent_style = tab
+
+[*.{js,jsx,mjs,ts,tsx,html,svg,ejs,css,sass,scss,conf}]
+indent_style = tab
+
+[COMMIT_EDITMSG]
+max_line_length = 0

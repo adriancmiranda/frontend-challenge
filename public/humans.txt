@@ -1,0 +1,14 @@
+/* TEAM */
+Your title: GetNinjas Test
+Site: adriancmiranda@gmail.com
+Twitter: @adriancmiranda
+Location: São Paulo, Brasil.
+
+/* THANKS */
+Name: @iondrimba
+
+/* SITE */
+Last update: 2020/02/17
+Standards: HTML5, CSS3, ES6
+Components: Express, Vanilla
+Software: Vim
