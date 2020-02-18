@@ -142,14 +142,8 @@ body {
 }
 
 .Form-input[data-ui-type="enumerable"] {
-	margin: 0.5rem 1rem;
+	margin: 1rem 0;
 	max-width: 100%;
-}
-
-@media (min-width: 500px) {
-	.Form-input[data-ui-type="enumerable"] {
-		margin: 1rem 0;
-	}
 }
 
 .Form-input[data-ui-type="enumerable"] h3 {
@@ -221,4 +215,14 @@ body {
 	font-size: 1rem;
 	outline: 0;
 	border: 0;
+}
+
+@media (max-width: 500px) {
+	.Stage {
+		width: 98%;
+	}
+
+	.Form-wrapper {
+		padding: 10px;
+	}
 }
