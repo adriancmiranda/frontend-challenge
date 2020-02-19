@@ -15,7 +15,7 @@ RUN node -v
 
 COPY package*.json /usr/src/app/
 
-RUN npm install
+RUN npm install --only=production
 
 CMD [ "npm", "run", "build" ]
 
