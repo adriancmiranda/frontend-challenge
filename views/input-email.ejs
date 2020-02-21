@@ -1,11 +1,11 @@
 <label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
-  <span class="Form-inputLabel"><%= label %></span>
-  <input
-    class="Form-inputEmail"
-    name="<%= name %>"
-    type="<%= type %>"
-    placeholder="<%= placeholder %>"
-    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-    <% if (required) { %>required="required"<% } %>
-  />
+	<span class="Form-inputLabel"><%= label %></span>
+	<input
+		class="Form-inputEmail"
+		name="<%= name %>"
+		type="<%= type %>"
+		placeholder="<%= placeholder %>"
+		pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+		<% if (required) { %>required="required"<% } %>
+	/>
 </label>

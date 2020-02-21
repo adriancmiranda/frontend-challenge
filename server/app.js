@@ -7,9 +7,9 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const serveFavicon = require('serve-favicon');
 const bodyParser = require('body-parser');
-const manifest = require('./manifest');
 const routes = require('./routes');
 const routesErrors = require('./routes/errors');
+const pipeline = require('./middlewares/pipeline');
 const httpsXFP = require('./middlewares/httpsXFP');
 
 const {
@@ -35,7 +35,7 @@ app.use(express.static(path.resolve(STATIC_DIR)));
 app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(cookieParser());
-app.use(manifest.spread({ manifestPath: path.resolve(MANIFEST_PATH) }));
+app.use(pipeline.spread({ manifestPath: path.resolve(MANIFEST_PATH) }));
 app.use('/', routes);
 app.use(routesErrors);
 

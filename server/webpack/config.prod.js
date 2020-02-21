@@ -36,6 +36,12 @@ module.exports = (app) => {
 			chunkFilename: 'scripts/[name].[hash:8].js',
 		},
 		resolve: {
+			alias: {
+				['#']: path.resolve('.'),
+				['@']: path.resolve('views'),
+				['~']: path.resolve('source'),
+				['typography']: path.resolve(path.join('source', 'assets', 'typography')),
+			},
 			modules: [
 				path.resolve('node_modules'),
 			],
