@@ -22,6 +22,7 @@ const mapAttrs = exports.mapAttrs = (attrs) => (
 const lookup = exports.lookup = (source) => {
 	manifest = loadManifest();
 	if (manifest.files[source]) {
+		console.log('manifest ->', source, manifest.files[source]);
 		return options.prependPath + manifest.files[source];
 	}
 	return '';

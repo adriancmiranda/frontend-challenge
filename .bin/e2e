@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const httpServer = require('http-server');
+const crossSpawn = require('cross-spawn');
+
+const { PORT = '8080' } = process.env;
+
+const server = httpServer.createServer({
+  root: process.cwd(),
+});
+
+let argv = process.argv.slice(2);
+if (!~argv.indexOf('--config')) {
+  argv = argv.concat(['-c', path.join(__dirname, 'nightwatch.config.js')]);
+}
+if (!~argv.indexOf('--env')) {
+  argv = argv.concat(['-e', 'chrome,firefox']);
+}
+
+const id = argv.indexOf('--test');
+if (~id) {
+  argv[id + 1] = path.resolve(`@tests/e2e/specs/${argv[id + 1]}.spec.js`);
+}
+
+const nightwatch = crossSpawn('nightwatch', argv, { stdio: 'inherit' });
+
+nightwatch.on('exit', function onExit(code) {
+  server.close();
+  process.exit(code);
+});
+
+nightwatch.on('error', function onError(err) {
+  server.close();
+  throw err;
+});
+
+server.listen(PORT);

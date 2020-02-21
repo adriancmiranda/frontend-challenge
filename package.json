@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "frontend-challenge",
+  "version": "1.0.0",
   "author": "Adrian C. Miranda <adriancmiranda@gmail.com>",
   "homepage": "http://adriancmiranda.github.io/",
   "main": "server/app.js",
