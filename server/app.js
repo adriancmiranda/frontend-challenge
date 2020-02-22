@@ -32,7 +32,7 @@ app.use(morgan('dev'));
 app.use(compression());
 app.use(serveFavicon(FAVICON_PATH));
 app.use(express.static(path.resolve(STATIC_DIR)));
-app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }));
 app.use(bodyParser.json({ limit: '5mb' }));
 app.use(cookieParser());
 app.use(pipeline.spread({ manifestPath: path.resolve(MANIFEST_PATH) }));

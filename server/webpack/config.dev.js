@@ -7,6 +7,26 @@ const whatwgFetch = require.resolve('whatwg-fetch');
 const webpackHotMiddlewareClient = require.resolve('webpack-hot-middleware/client');
 const styleLoader = require.resolve('style-loader');
 const cssLoader = require.resolve('css-loader');
+const fileLoader = require.resolve('file-loader');
+
+const getAssetPath = (
+	assetsDir,
+	filePath
+) => {
+	return assetsDir
+		? path.posix.join(assetsDir, filePath)
+		: filePath
+	;
+};
+
+const createAssetSubPath = ({
+	outputDir,
+	assetsDir,
+	filenameHashing,
+}) => getAssetPath(
+	assetsDir,
+	`${outputDir}/[name]${filenameHashing ? '.[hash:8]' : ''}.[ext]`
+);
 
 module.exports = (app) => {
 	const config = {
@@ -48,6 +68,7 @@ module.exports = (app) => {
 			],
 		},
 		module: {
+			exprContextCritical: false,
 			rules: [
 				{
 					test: /\.m?jsx?(\?.*)?$/i,
@@ -68,6 +89,21 @@ module.exports = (app) => {
 							options: {
 								modules: false,
 								sourceMap: true,
+							},
+						},
+					],
+				},
+				{
+					test: /\.(png|jpg|gif|svg)(\?.*)?$/i,
+					use: [
+						{
+							loader: fileLoader,
+							options: {
+								name: createAssetSubPath({
+									outputDir: 'assets/images',
+									assetsDir: '',
+									filenameHashing: true,
+								}),
 							},
 						},
 					],

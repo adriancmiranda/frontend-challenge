@@ -15,4 +15,13 @@ app.get('/test/:greetings', (request, response) => {
 	response.json({ message: `${request.params.greetings}: up & running!` });
 });
 
+app.post('/save-request', (request, response) => {
+	response.json({
+		success: true,
+		error: false,
+		message: 'The request has been saved',
+		data: [],
+	});
+});
+
 module.exports = app;

@@ -6,6 +6,13 @@ const fs = require('fs');
 let manifest;
 const options = {};
 
+const tryRequire = exports.tryRequire = (modulePath) => {
+	try {
+		modulePath = require(modulePath);
+	} catch (error) {}
+	return modulePath;
+};
+
 const loadManifest = exports.loadManifest = () => {
 	if (manifest && options.cache) return manifest;
 	try {
@@ -22,8 +29,7 @@ const mapAttrs = exports.mapAttrs = (attrs) => (
 const lookup = exports.lookup = (source) => {
 	manifest = loadManifest();
 	if (manifest.files[source]) {
-		console.log('manifest ->', source, manifest.files[source]);
-		return options.prependPath + manifest.files[source];
+		return tryRequire(options.prependPath + manifest.files[source]);
 	}
 	return '';
 };
@@ -72,15 +78,15 @@ const assetPath = exports.assetPath = (source) => (
 	lookup(source)
 );
 
-const imageTag = exports.imageTag = (source, attrs = {}) => (
+const image = exports.image = (source, attrs = {}) => (
 	trimTag(`<img src="${lookup(source)}" ${mapAttrs(attrs)} />`)
 );
 
-const javascriptTag = exports.javascriptTag = (source, attrs = {}) => (
+const javascript = exports.javascript = (source, attrs = {}) => (
 	trimTag(`<script src="${lookup(source)}" ${mapAttrs(attrs)}></script>`)
 );
 
-const stylesheetTag = exports.stylesheetTag = (source, attrs = {}) => (
+const stylesheet = exports.stylesheet = (source, attrs = {}) => (
 	trimTag(`<link rel="stylesheet" href="${lookup(source)}" ${mapAttrs(attrs)} />`)
 );
 
@@ -101,9 +107,9 @@ exports.spread = (opts) => {
 		res.locals.getImages = getImages;
 		res.locals.getManifest = getManifest;
 		res.locals.assetPath = assetPath;
-		res.locals.imageTag = imageTag;
-		res.locals.javascriptTag = javascriptTag;
-		res.locals.stylesheetTag = stylesheetTag;
+		res.locals.image = image;
+		res.locals.javascript = javascript;
+		res.locals.stylesheet = stylesheet;
 		next();
 	};
 };
