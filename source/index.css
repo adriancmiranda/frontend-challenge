@@ -127,6 +127,11 @@ body {
 	color: #000;
 }
 
+.Form-legend > img {
+	display: block;
+	margin: 16px auto;
+}
+
 .Form-legend > small {
 	display: block;
 }
@@ -191,12 +196,12 @@ body {
 }
 
 /* THEME FORM: ENUMERABLE */
-.Form-input[data-ui-type="enumerable"] {
+.Form-input[data-ui-input-type="enumerable"] {
 	margin: 1rem 0;
 	max-width: 100%;
 }
 
-.Form-input[data-ui-type="enumerable"] h3 {
+.Form-input[data-ui-input-type="enumerable"] h3 {
 	margin-left: 1rem;
 	font-size: 1.8rem;
 }
@@ -225,11 +230,11 @@ body {
 
 .Form-inputEnumerable::after {
 	position: absolute;
-	top: 50%;
+	top: 25%;
 	right: 18px;
 	width: 10px;
 	height: 10px;
-	margin-top: -7px;
+	margin-top: -2px;
 	display: block;
 	z-index: 5;
 	border: 3px solid var(--form-inputEnumerable-arrowColor);
@@ -267,6 +272,45 @@ body {
 	margin-top: 36px;
 	display: block;
 	width: 100%;
+}
+
+/* THEME FORM: STEP NAVIGATION */
+.Form-step {
+	position: relative;
+}
+
+.Form-stepList {
+	position: relative;
+	width: 100%;
+	padding: 0;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	box-shadow: inset 0 1px 0 0 #f2f2f2;
+	font-size: 12px;
+	font-weight: 400;
+	color: rgba(87, 87, 87, 0.5);
+	list-style-type: none;
+}
+
+.Form-stepListItem {
+	position: relative;
+  padding: 8px;
+  flex: 1;
+	background-color: #f2f2f2;
+  border-top: 1px solid #dbdbdb;
+  text-align: center;
+  color: #575757;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.Form-stepListItem.is-active {
+	background-color: #fff;
+  color: #000;
 }
 
 

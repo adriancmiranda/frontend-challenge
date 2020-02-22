@@ -1,4 +1,5 @@
 import './index.css';
+import './assets/images/fast-clock.svg';
 import './assets/images/getninjas_b.svg';
 import { version, name } from '#/package.json';
 import Form, { validateFullName, validateEmail, validatePhone } from './Form';

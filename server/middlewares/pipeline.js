@@ -78,10 +78,6 @@ const assetPath = exports.assetPath = (source) => (
 	lookup(source)
 );
 
-const image = exports.image = (source, attrs = {}) => (
-	trimTag(`<img src="${lookup(source)}" ${mapAttrs(attrs)} />`)
-);
-
 const javascript = exports.javascript = (source, attrs = {}) => (
 	trimTag(`<script src="${lookup(source)}" ${mapAttrs(attrs)}></script>`)
 );
@@ -89,6 +85,26 @@ const javascript = exports.javascript = (source, attrs = {}) => (
 const stylesheet = exports.stylesheet = (source, attrs = {}) => (
 	trimTag(`<link rel="stylesheet" href="${lookup(source)}" ${mapAttrs(attrs)} />`)
 );
+
+const image = exports.image = (source, attrs = {}) => (
+	trimTag(`<img src="${lookup(source)}" ${mapAttrs(attrs)} />`)
+);
+
+const mount = exports.mount = (locals) => {
+	locals.getSources = getSources;
+	locals.getStylesheetSources = getStylesheetSources;
+	locals.getStylesheets = getStylesheets;
+	locals.getJavascriptSources = getJavascriptSources;
+	locals.getJavascripts = getJavascripts;
+	locals.getImageSources = getImageSources;
+	locals.getImages = getImages;
+	locals.getManifest = getManifest;
+	locals.assetPath = assetPath;
+	locals.javascript = javascript;
+	locals.stylesheet = stylesheet;
+	locals.image = image;
+	return locals;
+};
 
 exports.spread = (opts) => {
 	const defaults = {
@@ -98,18 +114,7 @@ exports.spread = (opts) => {
 	manifest = null;
 	Object.assign(options, defaults, opts);
 	return (req, res, next) => {
-		res.locals.getSources = getSources;
-		res.locals.getStylesheetSources = getStylesheetSources;
-		res.locals.getStylesheets = getStylesheets;
-		res.locals.getJavascriptSources = getJavascriptSources;
-		res.locals.getJavascripts = getJavascripts;
-		res.locals.getImageSources = getImageSources;
-		res.locals.getImages = getImages;
-		res.locals.getManifest = getManifest;
-		res.locals.assetPath = assetPath;
-		res.locals.image = image;
-		res.locals.javascript = javascript;
-		res.locals.stylesheet = stylesheet;
+		mount(res.locals);
 		next();
 	};
 };

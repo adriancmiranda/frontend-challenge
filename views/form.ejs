@@ -52,6 +52,17 @@
 						</fieldset>
 
 						<fieldset class="Form-fieldset">
+							<legend class="Form-legend">
+								<%- image('assets/images/fast-clock.svg', {
+									class: 'Form-legendImg',
+									alt: 'Imagem de relógio célere.',
+								}); %>
+								Estamos quase lá!
+								<small>
+									Não perca tempo ligando para vários profissionais. Preencha os dados abaixo e
+									<strong>nós encontraremos os melhores pra você!</strong>
+								</small>
+							</legend>
 							<section class="Form-section">
 								<% _embedded.user_fields.forEach((input) => { %>
 								<%- include(`input-${input.type}`, input); %>
@@ -71,7 +82,7 @@
 
 			<footer class="Stage-footer Footer">
 				made with ♥ by
-				<a href="https://github.com/adriancmiranda" target="_blank">@adriancmiranda</a>
+				<a href="https://github.com/adriancmiranda/" target="_blank">@adriancmiranda</a>
 			</footer>
 		</section>
 

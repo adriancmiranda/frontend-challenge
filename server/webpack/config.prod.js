@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebPackPlugin = require('html-webpack-plugin');
+const { mount } = require('../middlewares/pipeline');
 
 const babelLoader = require.resolve('babel-loader');
 const whatwgFetch = require.resolve('whatwg-fetch');
@@ -136,6 +138,15 @@ module.exports = (app) => {
 				chunkFilename: 'styles/[id].[hash:8].css',
 				ignoreOrder: false,
 			}),
+
+			// @wait: https://github.com/jantimon/html-webpack-plugin/pull/1320
+			// new HtmlWebPackPlugin(mount({
+			// 	template: 'views/form.ejs',
+			// 	filename: 'form.html',
+			// 	env: process.env,
+			// 	minify: true,
+			// })),
+
 			new CleanWebpackPlugin({
 				cleanOnceBeforeBuildPatterns: [
 					'**/*',
