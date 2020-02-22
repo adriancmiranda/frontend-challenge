@@ -1,11 +1,14 @@
-<label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
-	<span class="Form-inputLabel"><%= label %></span>
+<label class="Form-input" data-ui-input-name="<%= name %>" data-ui-input-type="<%= type %>">
+	<span class="Form-inputLabel"><%= label %><% if (required) { %>*<% } %></span>
 	<input
-		class="Form-inputCep"
+		class="Form-inputField Form-inputField--cep"
 		name="<%= name %>"
-		type="number"
-		placeholder="<%= placeholder %>"
-		pattern="[0-9]+$"
+		type="text"
+		pattern="[0-9-]+$"
+		<% if (placeholder) { %>placeholder="<%= placeholder %>"<% } %>
 		<% if (required) { %>required="required"<% } %>
+		data-mask-placeholder=""
+		data-mask-format="*****-***"
 	/>
+	<span class="Form-inputError" data-ui-input-error="<%= name %>">&nbsp;</span>
 </label>

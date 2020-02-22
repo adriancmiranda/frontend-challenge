@@ -1,14 +1,16 @@
-<label class="Form-input" data-ui-name="<%= name %>" data-ui-type="<%= type %>">
-	<span class="Form-inputLabel"><%= label %></span>
+<label class="Form-input" data-ui-input-name="<%= name %>" data-ui-input-type="<%= type %>">
+	<span class="Form-inputLabel"><%= label %><% if (required) { %>*<% } %></span>
 	<input
-		class="Form-inputPhone"
+		class="Form-inputField Form-inputField--phone"
 		name="<%= name %>"
 		type="tel"
-		placeholder="<%= placeholder %>"
 		maxlength="15"
 		pattern="\([0-9]{2}\) [0-9]{4,6}-[0-9]{3,4}$"
+		<% if (placeholder) { %>placeholder="<%= placeholder %>"<% } %>
 		<% if (required) { %>required="required"<% } %>
-		data-format="(**) *****-****"
-		data-mask=""
+		data-mask-split-char=", "
+		data-mask-placeholder=""
+		data-mask-format="(**) ****-****, (**) *****-****"
 	/>
+	<span class="Form-inputError" data-ui-input-error="<%= name %>">&nbsp;</span>
 </label>

@@ -24,20 +24,20 @@
 		<title>GetNinjas - FrontEnd Challenge</title>
 		<link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
 		<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-		<%- stylesheetTag('index.css'); %>
+		<%- stylesheet('index.css'); %>
 	</head>
 	<body class="is-rendering">
 		<section class="Stage" data-ui-stage="GNFEC">
 			<header class="Stage-header Header">
 				<h1 class="Header-title">
-					GetNinjas
+					<%- image('assets/images/getninjas_b.svg', { class: 'Header-brand', alt: 'GetNinjas' }); %>
 					<small>FrontEnd Challenge</small>
 				</h1>
 			</header>
 
 			<section class="Stage-form Form">
 				<div class="Form-wrapper">
-					<form class="Form-requests" name="requests" novalidate>
+					<form class="Form-requests" name="moda-e-beleza/cabeleireiros">
 						<fieldset class="Form-fieldset">
 							<legend class="Form-legend">
 								Explique o que você precisa
@@ -48,6 +48,7 @@
 								<%- include(`input-${input.type}`, input); %>
 								<% }) %>
 							</section>
+							<button class="Form-submit" type="submit">BUSCAR PROFISSIONAIS</button>
 						</fieldset>
 
 						<fieldset class="Form-fieldset">
@@ -56,13 +57,19 @@
 								<%- include(`input-${input.type}`, input); %>
 								<% }) %>
 							</section>
+							<input class="Form-submit" type="submit" value="FINALIZAR"/>
 						</fieldset>
 					</form>
 				</div>
 			</section>
+
+			<footer class="Stage-footer Footer">
+				made with ♥ by
+				<a href="https://github.com/adriancmiranda" target="_blank">@adriancmiranda</a>
+			</footer>
 		</section>
 
-		<%- javascriptTag('polyfill.js'); %>
-		<%- javascriptTag('index.js'); %>
+		<%- javascript('polyfill.js'); %>
+		<%- javascript('index.js'); %>
 	</body>
 </html>
