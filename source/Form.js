@@ -72,25 +72,6 @@ export function isRequired(field) {
 	return !!(field && field.required);
 }
 
-export function assignOptions(options) {
-	const opts = Object.assign({}, options);
-	opts.rules = Object.assign({}, opts.rules);
-	return opts;
-}
-
-export function assertOptions(options) {
-	if (!options) {
-		throw new Error('É necessário que você passe um objeto com opções a serem validadas');
-	}
-	if ('name' in options && !isString(options.name)) {
-		throw new Error('É necessário que o parâmetro "name" seja uma string');
-	}
-	if (options.rules === undefined || options.rules === null) {
-		throw new Error('É preciso haver um parâmetro "rules" como um objeto');
-	}
-	return options;
-}
-
 export function getParentsFromEl($el, parentsSelector) {
 	const elements = [];
 	while (($el = $el.parentElement) !== null) {
@@ -122,11 +103,55 @@ export function getSiblingsFromEl($el, siblingSelector) {
 	return siblings;
 }
 
+export function getChildrenWidth($children) {
+	return $children.reduce((size, $child, index, { length }) => {
+		size += $child.clientWidth;
+		return size;
+	}, 0);
+}
+
+export function setChildrenWidth(childrenWidth, $children) {
+	return $children.map(($child, index, { length }) => {
+		$child.style.width = `${childrenWidth / length}px`;
+		return $child;
+	});
+}
+
+export function setListWidthAndRetrieveResult($wrapper, $children, gutterX = 0) {
+	const childrenWidth = getChildrenWidth($children);
+	setChildrenWidth(childrenWidth, $children);
+	$wrapper.style.width = `${childrenWidth + gutterX}px`;
+	return childrenWidth;
+}
+
+export function assignOptions(options) {
+	const opts = Object.assign({ currentStep: 1 }, options);
+	opts.rules = Object.assign({}, opts.rules);
+	return opts;
+}
+
+export function assertOptions(options) {
+	if (!options) {
+		throw new Error('É necessário que você passe um objeto com opções a serem validadas');
+	}
+	if ('name' in options && !isString(options.name)) {
+		throw new Error('É necessário que o parâmetro "name" seja uma string');
+	}
+	if (options.rules === undefined || options.rules === null) {
+		throw new Error('É preciso haver um parâmetro "rules" como um objeto');
+	}
+	return options;
+}
+
 export class Form {
 
 	constructor(options) {
 		this.options = assertOptions(assignOptions(options));
 		this.form = document[this.options.name];
+		this.formWrapper = getParentsFromEl(this.form, '[data-ui-form-wrapper]')[0];
+		this.formChildren = [...this.form.children];
+		this.steps = this.formChildren.length;
+		this.currentStep = this.options.currentStep;
 		this.registerEvents = this.registerEvents.bind(this);
 		this.unregisterEvents = this.unregisterEvents.bind(this);
 		this.onChangeField = this.onChangeField.bind(this);
@@ -137,95 +162,117 @@ export class Form {
 		this.getFieldByName = this.getFieldByName.bind(this);
 		this.getButtons = this.getButtons.bind(this);
 		this.getFields = this.getFields.bind(this);
+		this.setStep = this.setStep.bind(this);
+		this.jumpStep = this.jumpStep.bind(this);
+		this.nextStep = this.nextStep.bind(this);
+		this.prevStep = this.prevStep.bind(this);
+		this.arrange = this.arrange.bind(this);
 		this.eventsMaskMap = {};
 		this.submitting = false;
 	}
 
-	registerMaskKeyUpEventByEl(el) {
-		const format = el.getAttribute('data-mask-format');
-		const placeholder = el.getAttribute('data-mask-placeholder');
-		const splitChar = el.getAttribute('data-mask-split-char');
-		this.eventsMaskMap[el.name] = () => {
+	registerMaskKeyUpEventByEl($el) {
+		const format = $el.getAttribute('data-mask-format');
+		const placeholder = $el.getAttribute('data-mask-placeholder');
+		const splitChar = $el.getAttribute('data-mask-split-char');
+		this.eventsMaskMap[$el.name] = () => {
 			if (splitChar) {
-				inputMasksByEl(el, format, placeholder, splitChar);
+				inputMasksByEl($el, format, placeholder, splitChar);
 			} else {
-				inputMaskByEl(el, format, placeholder);
+				inputMaskByEl($el, format, placeholder);
 			}
 		};
-		el.addEventListener('keyup', this.eventsMaskMap[el.name]);
-		inputMaskByEl(el, format, placeholder);
+		$el.addEventListener('keyup', this.eventsMaskMap[$el.name]);
+		inputMaskByEl($el, format, placeholder);
 	}
 
-	unregisterMaskKeyUpEventByEl(el) {
-		el.removeEventListener('keyup', this.eventsMaskMap[el.name]);
+	unregisterMaskKeyUpEventByEl($el) {
+		$el.removeEventListener('keyup', this.eventsMaskMap[$el.name]);
 	}
 
-	registerInputBlurEventByEl(el) {
-		el.addEventListener('blur', this.onChangeField);
-		el.addEventListener('change', this.onChangeField);
+	registerInputBlurEventByEl($el) {
+		$el.addEventListener('blur', this.onChangeField);
+		$el.addEventListener('change', this.onChangeField);
 	}
 
-	unregisterInputBlurEventByEl(el) {
-		el.removeEventListener('blur', this.onChangeField);
-		el.removeEventListener('change', this.onChangeField);
+	unregisterInputBlurEventByEl($el) {
+		$el.removeEventListener('blur', this.onChangeField);
+		$el.removeEventListener('change', this.onChangeField);
 	}
 
-	registerButtonEventByEl(el) {
-		el.onclick = this.submit;
+	registerButtonEventByEl($el) {
+		$el.onclick = this.submit;
 	}
 
-	unregisterButtonEventByEl(el) {
-		delete el.onclick;
+	unregisterButtonEventByEl($el) {
+		delete $el.onclick;
 	}
 
 	onChangeField() {
-		if (this.submitting) this.getErrors();
+		if (this.submitting) this.getErrors(/*this.currentStep*/);
 	}
 
 	registerEvents() {
-		const $masks = this.getAllInputMask();
+		const $masks = this.getInputMasks(/*this.currentStep*/);
 		$masks.forEach(this.registerMaskKeyUpEventByEl, this);
-		const $fields = this.getFields();
+		const $fields = this.getFields(/*this.currentStep*/);
 		$fields.forEach(this.registerInputBlurEventByEl, this);
-		const $buttons = this.getButtons();
+		const $buttons = this.getButtons(/*this.currentStep*/);
 		$buttons.forEach(this.registerButtonEventByEl, this);
 	}
 
 	unregisterEvents() {
-		const $masks = this.getAllInputMask();
+		const $masks = this.getInputMasks(/*this.currentStep*/);
 		$masks.forEach(this.unregisterMaskKeyUpEventByEl, this);
-		const $fields = this.getFields();
+		const $fields = this.getFields(/*this.currentStep*/);
 		$fields.forEach(this.unregisterInputBlurEventByEl, this);
-		const $buttons = this.getButtons();
+		const $buttons = this.getButtons(/*this.currentStep*/);
 		$buttons.forEach(this.unregisterButtonEventByEl, this);
 	}
 
-	serialize() {
-		const $fields = this.getFields();
+	serialize(stepIndex) {
+		const $fields = this.getFields(stepIndex);
 		return $fields.reduce((data, $field) => {
 			data[$field.name] = $field.value;
 			return data;
 		}, {});
 	}
 
+	setStep(index) {
+		this.currentStep = Math.min(Math.max(0, parseInt(index, 0)), this.steps);
+		return this.currentStep;
+	}
+
+	jumpStep(amount) {
+		return this.setStep(this.currentStep + amount);
+	}
+
+	nextStep() {
+		return this.jumpStep(+1);
+	}
+
+	prevStep() {
+		return this.jumpStep(-1);
+	}
+
 	submit(evt) {
 		this.submitting = true;
-		if (this.validate()) {
+		if (this.validate(/*this.currentStep*/)) {
 			const data = this.serialize();
 			const body = JSON.stringify(data);
 			fetch('/save-request', { method: 'post', body }).then((response) =>
 				response.json()
 			).then((response) => {
+				this.submitting = false;
 				alert('[request has been saved]');
 				console.log('[request has been saved]', response);
 			});
-			this.submitting = false;
 		}
 		return false;
 	}
 
-	validate() {
-		const invalidFields = this.getErrors();
+	validate(stepIndex) {
+		const invalidFields = this.getErrors(stepIndex);
 		if (invalidFields.length) {
 			invalidFields[0].focus();
 			return false;
@@ -233,8 +280,8 @@ export class Form {
 		return true;
 	}
 
-	clearErrors() {
-		const $fields = this.getFields();
+	clearErrors(stepIndex) {
+		const $fields = this.getFields(stepIndex);
 		$fields.forEach(($field) => {
 			const $fieldInput = getParentsFromEl($field, '[data-ui-input-name]');
 			if ($fieldInput[0]) $fieldInput[0].classList.remove('is-error');
@@ -243,10 +290,10 @@ export class Form {
 		});
 	}
 
-	getErrors(highlight = true) {
-		this.clearErrors();
+	getErrors(stepIndex, highlight = true) {
+		this.clearErrors(stepIndex);
 		const invalidFields = [];
-		const $fields = this.getFields();
+		const $fields = this.getFields(stepIndex);
 		$fields.forEach(($field) => {
 			const rule = this.options.rules[$field.name] || {};
 			const validate = isFunction(rule.validate);
@@ -255,7 +302,9 @@ export class Form {
 				const $fieldInput = getParentsFromEl($field, '[data-ui-input-name]');
 				if (highlight && $fieldInput[0]) $fieldInput[0].classList.add('is-error');
 				const $fieldError = getSiblingsFromEl($field, '[data-ui-input-error]');
-				if ($fieldError[0]) $fieldError[0].innerHTML = rule.errorMessage || 'Campo inválido';
+				if (highlight && $fieldError[0]) $fieldError[0].innerHTML = (
+					rule.errorMessage || 'Campo inválido'
+				);
 				invalidFields.push($field);
 			}
 		});
@@ -266,25 +315,32 @@ export class Form {
 		return document[this.options.name][name] || null;
 	}
 
-	getButtons() {
-		const formSelector = `form[name="${this.options.name}"]`;
+	getButtons(stepIndex) {
+		const stepSelector = stepIndex ? `:nth-child(${parseInt(stepIndex, 10)})` : '';
+		const formSelector = `form[name="${this.options.name}"]${stepSelector}`;
 		return [...document.querySelectorAll([
 			`${formSelector} button[type="submit"]`,
 			`${formSelector} input[type="submit"]`,
 		].join(','))];
 	}
 
-	getAllInputMask() {
-		const formSelector = `form[name="${this.options.name}"]`;
+	getInputMasks(stepIndex) {
+		const stepSelector = stepIndex ? `:nth-child(${parseInt(stepIndex, 10)})` : '';
+		const formSelector = `form[name="${this.options.name}"]${stepSelector}`;
 		return [...document.querySelectorAll(`${formSelector} input[data-mask-format]`)];
 	}
 
-	getFields() {
-		const formSelector = `form[name="${this.options.name}"]`;
+	getFields(stepIndex) {
+		const stepSelector = stepIndex ? `:nth-child(${parseInt(stepIndex, 10)})` : '';
+		const formSelector = `form[name="${this.options.name}"]${stepSelector}`;
 		return [...document.querySelectorAll([
 			`${formSelector} input[name]`,
 			`${formSelector} select[name]`,
 		].join(','))];
+	}
+
+	arrange() {
+		this.stepsWidth = setListWidthAndRetrieveResult(this.formWrapper, this.formChildren, 100);
 	}
 
 	toString() {
