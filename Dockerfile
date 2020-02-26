@@ -25,6 +25,7 @@ COPY . /usr/src/app/
 
 RUN find .bin -not -path "*.config.*" -type f -exec chmod +x {} \
 
+EXPOSE 443
 EXPOSE 80
 
 CMD [ "npm", "run", "docker" ]
