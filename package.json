@@ -21,8 +21,8 @@
     "build": "webpack-cli --env=production --progress --profile --colors --verbose --config=server/webpack/config.prod.js",
     "ngrok": "ngrok http 9000 -host-header=localhost:9000",
     "predocker": "npm run docker:build",
-    "docker": "docker run -it -p 80:3000 -v $(pwd):/usr/src/app/ 'fiat-strada:Dockerfile'",
-    "docker:build": "docker build -t 'fiat-strada:Dockerfile' . && docker images",
+    "docker": "docker run -it -p 80:3000 -v $(pwd):/usr/src/app/ 'frontend-challenge:Dockerfile'",
+    "docker:build": "docker build -t 'frontend-challenge:Dockerfile' . && docker images",
     "docker:test": "curl localhost:80",
     "start": "node server"
   },
